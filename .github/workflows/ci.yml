@@ -1,4 +1,4 @@
-name: GitHub Actions Workflow
+name: MERN Amazona CI
 
 on:
   push:
@@ -6,21 +6,35 @@ on:
       - master
 
 jobs:
-  hello:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Say Hello
-        run: echo "Hello GitHub Actions!"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-      - name: Print Current Directory
-        run: pwd
+      - name: Install Backend Dependencies
+        working-directory: backend
+        run: npm install
 
-      - name: List Repository Files
-        run: ls -la
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Build Frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Build Backend Docker Image
+        run: docker build -t amazona-backend ./backend
+
+      - name: Build Frontend Docker Image
+        run: docker build -t amazona-frontend ./frontend
 
 
 
