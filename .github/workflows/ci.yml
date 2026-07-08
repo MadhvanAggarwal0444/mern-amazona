@@ -1,0 +1,26 @@
+name: GitHub Actions Workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Say Hello
+        run: echo "Hello GitHub Actions!"
+
+      - name: Print Current Directory
+        run: pwd
+
+      - name: List Repository Files
+        run: ls -la
+
+
+
