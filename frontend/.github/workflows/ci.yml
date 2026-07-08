@@ -34,4 +34,4 @@ jobs:
         run: docker build -t amazona-backend ./backend
 
       - name: Build Frontend Docker Image
-        run: docker build -t amazona-frontend ./frontend
+        run: docker build -t amazona-frontend ./frontendgit add .github/workflows/ci.yml
