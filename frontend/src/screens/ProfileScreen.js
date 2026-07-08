@@ -21,19 +21,24 @@ const reducer = (state, action) => {
   }
 };
 
-export default function ProfileScreen() {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
-  const [name, setName] = useState(userInfo.name);
-  const [email, setEmail] = useState(userInfo.email);
-  const [password, setPassword] = useState('');
+  export default function ProfileScreen() {
+    const { state, dispatch: ctxDispatch } = useContext(Store);
+    const { userInfo } = state;
+    const [name, setName] = useState(userInfo.name);
+    const [email, setEmail] = useState(userInfo.email);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [, dispatch] = useReducer(reducer, {
+    const [, dispatch] = useReducer(reducer, {
   loadingUpdate: false,
 });
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+  toast.error('Passwords do not match');
+  return;
+}
     try {
       const { data } = await axios.put(
         '/api/users/profile',
