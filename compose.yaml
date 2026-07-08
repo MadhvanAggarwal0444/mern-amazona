@@ -1,0 +1,45 @@
+services:
+  mongo:
+    image: mongo
+    container_name: amazona-mongo
+    environment:
+      MONGO_INITDB_DATABASE: amazona
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - database-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: amazona-backend
+    ports:
+      - "4000:4000"
+    environment:
+      MONGODB_URI: mongodb://amazona-mongo:27017/amazona
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+      - database-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: amazona-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+  database-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
