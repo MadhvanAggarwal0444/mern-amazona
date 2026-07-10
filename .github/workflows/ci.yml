@@ -49,4 +49,14 @@ jobs:
           context: ./frontend
           push: true
           tags: maddy72/amazona-frontend:latest
+  deploy:
+    needs: build-and-push
+    runs-on: self-hosted
+
+    steps:
+      - name: Deploy Latest Images
+        run: |
+          cd ~/dockerthings/mern-amazona
+          docker compose -f compose.prod.yaml pull
+          docker compose -f compose.prod.yaml up -d
 
