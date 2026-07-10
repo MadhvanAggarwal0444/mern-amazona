@@ -1,0 +1,44 @@
+services:
+  mongo:
+    image: mongo
+    container_name: amazona-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: amazona
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - database-network
+
+  backend:
+    image: maddy72/amazona-backend:latest
+    container_name: amazona-backend
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      MONGODB_URI: mongodb://amazona-mongo:27017/amazona
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+      - database-network
+
+  frontend:
+    image: maddy72/amazona-frontend:latest
+    container_name: amazona-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+  database-network:
+
+volumes:
+  mongo-data:
